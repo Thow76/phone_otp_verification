@@ -21,11 +21,13 @@ class _LoginScreenState extends State<LoginScreen> {
   getMobileFormWidget(context) {
     return Column(
       children: [
+        Spacer(),
         TextField(
           decoration: InputDecoration(
             hintText: " Phone Number",
           ),
         ),
+        Spacer(),
         SizedBox(
           height: 16,
         ),
