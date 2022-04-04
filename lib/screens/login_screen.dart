@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+enum MobileVerificationState {
+  SHOW_MOBILE_FORM_STATE,
+  SHOW_OTP_FORM_STATE,
+}
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -8,12 +13,33 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // variable
+  MobileVerificationState currentState =
+      MobileVerificationState.SHOW_MOBILE_FORM_STATE;
+
+  // methods
+  getMobileFormWidget(context) {
+    return Column(
+      children: [
+        TextField(
+          decoration: InputDecoration(
+            hintText: " Phone Number",
+          ),
+        ),
+        SizedBox(
+          height: 16,
+        ),
+      ],
+    );
+  }
+
+  getOtpFormWidget(context) {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text("Login Screen"),
-      ),
-    );
+        body: currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
+            ? getMobileFormWidget(context)
+            : getOtpFormWidget(context));
   }
 }
