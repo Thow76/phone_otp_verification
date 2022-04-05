@@ -27,10 +27,16 @@ class _LoginScreenState extends State<LoginScreen> {
             hintText: " Phone Number",
           ),
         ),
-        Spacer(),
         SizedBox(
           height: 16,
         ),
+        FlatButton(
+          onPressed: () {},
+          child: Text("Verify"),
+          color: Colors.blue,
+          textColor: Colors.white,
+        ),
+        Spacer(),
       ],
     );
   }
