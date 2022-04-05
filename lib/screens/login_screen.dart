@@ -17,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   MobileVerificationState currentState =
       MobileVerificationState.SHOW_MOBILE_FORM_STATE;
 
+  // variable
   final phoneContoller = TextEditingController();
   final otpContoller = TextEditingController();
 
@@ -26,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         Spacer(),
         TextField(
-          controller: phoneContoller,
+          controller: otpContoller,
           decoration: InputDecoration(
             hintText: " Phone Number",
           ),
