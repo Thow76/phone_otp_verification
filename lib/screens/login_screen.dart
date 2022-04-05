@@ -46,8 +46,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
+      body: Container(
+        child: currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
             ? getMobileFormWidget(context)
-            : getOtpFormWidget(context));
+            : getOtpFormWidget(context),
+        padding: const EdgeInsets.all(16),
+      ),
+    );
   }
 }
