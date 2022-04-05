@@ -17,14 +17,42 @@ class _LoginScreenState extends State<LoginScreen> {
   MobileVerificationState currentState =
       MobileVerificationState.SHOW_MOBILE_FORM_STATE;
 
+  final phoneContoller = TextEditingController();
+  final otpContoller = TextEditingController();
+
   // methods
   getMobileFormWidget(context) {
     return Column(
       children: [
         Spacer(),
         TextField(
+          controller: phoneContoller,
           decoration: InputDecoration(
             hintText: " Phone Number",
+          ),
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        FlatButton(
+          onPressed: () {},
+          child: Text("Send"),
+          color: Colors.blue,
+          textColor: Colors.white,
+        ),
+        Spacer(),
+      ],
+    );
+  }
+
+  getOtpFormWidget(context) {
+    return Column(
+      children: [
+        Spacer(),
+        TextField(
+          controller: phoneContoller,
+          decoration: InputDecoration(
+            hintText: " Enter OTP ",
           ),
         ),
         SizedBox(
@@ -40,8 +68,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ],
     );
   }
-
-  getOtpFormWidget(context) {}
 
   @override
   Widget build(BuildContext context) {
