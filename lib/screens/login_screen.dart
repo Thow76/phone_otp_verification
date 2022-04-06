@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 enum MobileVerificationState {
@@ -21,6 +22,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final phoneContoller = TextEditingController();
   final otpContoller = TextEditingController();
 
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
+  late String verificationId;
+
   // methods
   getMobileFormWidget(context) {
     return Column(
@@ -36,8 +41,21 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 16,
         ),
         FlatButton(
-          onPressed: () {},
-          child: Text("Send"),
+          onPressed: () async {
+            await _auth.verifyPhoneNumber(
+              phoneNumber: phoneContoller.text,
+              verificationCompleted: (PhoneAuthCredential) async {},
+              verificationFailed: (PhoneVerificationFailed) async {},
+              codeSent: (verificationId, resendingToken) async {
+                setState(() {
+                  currentState = MobileVerificationState.SHOW_OTP_FORM_STATE;
+                  this.verificationId = verificationId;
+                });
+              },
+              codeAutoRetrievalTimeout: (verificationId) async {},
+            );
+          },
+          child: Text("VERIFY"),
           color: Colors.blue,
           textColor: Colors.white,
         ),
@@ -61,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         FlatButton(
           onPressed: () {},
-          child: Text("Verify"),
+          child: Text("SEND"),
           color: Colors.blue,
           textColor: Colors.white,
         ),
