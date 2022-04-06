@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +47,10 @@ class _LoginScreenState extends State<LoginScreen> {
             await _auth.verifyPhoneNumber(
               phoneNumber: phoneContoller.text,
               verificationCompleted: (PhoneAuthCredential) async {},
-              verificationFailed: (PhoneVerificationFailed) async {},
+              verificationFailed: (verificationFailed) async {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Verification Failed")));
+              },
               codeSent: (verificationId, resendingToken) async {
                 setState(() {
                   currentState = MobileVerificationState.SHOW_OTP_FORM_STATE;
@@ -88,9 +93,12 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         child: currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
             ? getMobileFormWidget(context)
