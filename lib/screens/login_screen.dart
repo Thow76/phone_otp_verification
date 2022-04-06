@@ -113,9 +113,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
-        child: currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
-            ? getMobileFormWidget(context)
-            : getOtpFormWidget(context),
+        child: showLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
+                ? getMobileFormWidget(context)
+                : getOtpFormWidget(context),
         padding: const EdgeInsets.all(16),
       ),
     );
