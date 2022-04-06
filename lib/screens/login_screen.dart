@@ -28,6 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late String verificationId;
 
+  bool showLoading = false;
+
   // methods
   getMobileFormWidget(context) {
     return Column(
@@ -44,15 +46,26 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         FlatButton(
           onPressed: () async {
+            setState(() {
+              showLoading = true;
+            });
             await _auth.verifyPhoneNumber(
               phoneNumber: phoneContoller.text,
-              verificationCompleted: (PhoneAuthCredential) async {},
+              verificationCompleted: (PhoneAuthCredential) async {
+                setState(() {
+                  showLoading = false;
+                });
+              },
               verificationFailed: (verificationFailed) async {
+                setState(() {
+                  showLoading = false;
+                });
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("Verification Failed")));
               },
               codeSent: (verificationId, resendingToken) async {
                 setState(() {
+                  showLoading = false;
                   currentState = MobileVerificationState.SHOW_OTP_FORM_STATE;
                   this.verificationId = verificationId;
                 });
