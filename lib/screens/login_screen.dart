@@ -21,8 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
       MobileVerificationState.SHOW_MOBILE_FORM_STATE;
 
   // variable
-  final phoneContoller = TextEditingController();
-  final otpContoller = TextEditingController();
+  final phoneController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
 
   FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -30,13 +30,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool showLoading = false;
 
+  void signInWithPhoneAuthCredential(
+      PhoneAuthCredential phoneAuthCredential) async {
+    setState(() {
+      showLoading = true;
+    });
+    try {
+      final authCredential =
+          await _auth.signInWithCredential(phoneAuthCredential);
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        showLoading = false;
+      });
+    }
+  }
+
   // methods
   getMobileFormWidget(context) {
     return Column(
       children: [
         Spacer(),
         TextField(
-          controller: otpContoller,
+          controller: otpController,
           decoration: InputDecoration(
             hintText: " Phone Number",
           ),
@@ -50,18 +65,19 @@ class _LoginScreenState extends State<LoginScreen> {
               showLoading = true;
             });
             await _auth.verifyPhoneNumber(
-              phoneNumber: phoneContoller.text,
+              phoneNumber: phoneController.text,
               verificationCompleted: (PhoneAuthCredential) async {
                 setState(() {
                   showLoading = false;
                 });
+                //signInWithPhoneAuthCredential(PhoneAuthCredential);
               },
               verificationFailed: (verificationFailed) async {
                 setState(() {
                   showLoading = false;
                 });
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Verification Failed")));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text("kjhkjkj")));
               },
               codeSent: (verificationId, resendingToken) async {
                 setState(() {
@@ -87,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         Spacer(),
         TextField(
-          controller: phoneContoller,
+          controller: phoneController,
           decoration: InputDecoration(
             hintText: " Enter OTP ",
           ),
@@ -96,7 +112,12 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 16,
         ),
         FlatButton(
-          onPressed: () {},
+          onPressed: () async {
+            final PhoneAuthCredential = PhoneAuthProvider.credential(
+                verificationId: verificationId, smsCode: "khjkjhkk");
+
+            signInWithPhoneAuthCredential(PhoneAuthCredential);
+          },
           child: Text("SEND"),
           color: Colors.blue,
           textColor: Colors.white,
