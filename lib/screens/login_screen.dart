@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:phone_otp_verification/screens/home_screen.dart';
 
 enum MobileVerificationState {
   SHOW_MOBILE_FORM_STATE,
@@ -38,10 +39,22 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final authCredential =
           await _auth.signInWithCredential(phoneAuthCredential);
+
+      setState(() {
+        showLoading = false;
+      });
+
+      if (authCredential.user != null) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      }
     } on FirebaseAuthException catch (e) {
       setState(() {
         showLoading = false;
       });
+
+      _scaffoldKey.currentState!
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
@@ -77,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   showLoading = false;
                 });
                 ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text("kjhkjkj")));
+                    .showSnackBar(SnackBar(content: Text("ddddd")));
               },
               codeSent: (verificationId, resendingToken) async {
                 setState(() {
@@ -114,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
         FlatButton(
           onPressed: () async {
             final PhoneAuthCredential = PhoneAuthProvider.credential(
-                verificationId: verificationId, smsCode: "khjkjhkk");
+                verificationId: verificationId, smsCode: otpController.text);
 
             signInWithPhoneAuthCredential(PhoneAuthCredential);
           },
