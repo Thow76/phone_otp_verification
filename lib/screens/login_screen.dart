@@ -10,8 +10,6 @@ enum MobileVerificationState {
 }
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -23,11 +21,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // variable
   final phoneController = TextEditingController();
-  TextEditingController otpController = TextEditingController();
+  final otpController = TextEditingController();
 
   FirebaseAuth _auth = FirebaseAuth.instance;
 
-  late String verificationId;
+  String verificationId;
 
   bool showLoading = false;
 
@@ -53,8 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
         showLoading = false;
       });
 
-      _scaffoldKey.currentState!
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(e.code)));
     }
   }
 
@@ -89,8 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 setState(() {
                   showLoading = false;
                 });
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text("ddddd")));
+                Scaffold.of(context).showSnackBar(
+                    SnackBar(content: Text(verificationFailed.message)));
               },
               codeSent: (verificationId, resendingToken) async {
                 setState(() {
